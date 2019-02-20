@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "55f97497-8cd1-422f-ba58-fe1512938fd9",
+		"name": "SPRING_REACTIVE__TEST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "spring-reactive-web",
+			"item": [
+				{
+					"name": "Get all employees",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0218e60f-ac87-452c-b7cf-f014f721e198",
+								"exec": [
+									"",
+									"tests[\"200 OK\"] = responseCode.code === 200;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get employee by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0218e60f-ac87-452c-b7cf-f014f721e198",
+								"exec": [
+									"",
+									"tests[\"200 OK\"] = responseCode.code === 200;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a6d870e2-847b-408c-acbb-96ffda586c60",
+								"exec": [
+									"",
+									"pm.environment.set(\"employee-id\", \"1\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/employees/{{employee-id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees",
+								"{{employee-id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update employee",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0218e60f-ac87-452c-b7cf-f014f721e198",
+								"exec": [
+									"",
+									"tests[\"200 OK\"] = responseCode.code === 200;",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a6d870e2-847b-408c-acbb-96ffda586c60",
+								"exec": [
+									"",
+									"pm.environment.set(\"employee-id\", \"1\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "secret",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"1\",\n\t\"name\": \"Matteo Baiguini\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"employees"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
