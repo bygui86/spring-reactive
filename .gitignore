@@ -1,0 +1,76 @@
+
+###################### General ##################
+
+# -
+
+
+
+###################### OS generated #############
+
+########### Mac OS X
+*~
+._*
+__MACOSX
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+### jenv
+.java-version
+
+########### Windows
+Desktop.ini
+ehthumbs.db
+Thumbs.db
+
+########### Linux
+# -
+
+
+
+###################### IDE configurations #######
+
+########### IntelliJ Idea
+.idea/
+.intellij/
+*.eml
+*.iws
+*.iml
+*.ipr
+out/
+
+########### Eclipse
+.externalToolBuilders/
+.metadata*/
+.recommenders/
+eclipsebin/
+RemoteSystemsTempFiles/
+.classpath
+.project
+.factorypath
+.settings/
+
+########### Visual Studio Code
+*.code-workspace
+
+
+
+###################### Build automation tools ###
+
+.gradle/
+.m2/
+
+
+
+###################### Compiler #################
+
+bin/
+build/
+target/
+*.class
+
+
+
+###################### Proejct-Specific #########
+
+testing/xml/*.xml
