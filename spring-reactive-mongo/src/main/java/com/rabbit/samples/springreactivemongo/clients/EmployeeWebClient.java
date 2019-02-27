@@ -78,9 +78,4 @@ public class EmployeeWebClient {
 		return Integer.toString(new Random().nextInt(10));
 	}
 
-	private void logInfoEmployee(final String prefix, final Employee employee) {
-
-		log.info(employee.toString());
-	}
-
 }

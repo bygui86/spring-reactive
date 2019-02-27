@@ -1,6 +1,7 @@
 package com.rabbit.samples.springreactivewebsocket.configs;
 
-import com.rabbit.samples.springreactivewebsocket.handlers.EmployeeWebSocketHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbit.samples.springreactivewebsocket.handlers.ReactiveWebSocketHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.HandlerMapping;
@@ -21,6 +22,12 @@ import java.util.Map;
 public class WebSocketConfig {
 
 	@Bean
+	public ObjectMapper objectMapper() {
+
+		return new ObjectMapper();
+	}
+
+	@Bean
 	public WebSocketHandlerAdapter webSocketHandlerAdapter() {
 
 		return new WebSocketHandlerAdapter();
@@ -38,7 +45,10 @@ public class WebSocketConfig {
 	private Map<String, WebSocketHandler> buildWebSocketHandlerMap() {
 
 		Map<String, WebSocketHandler> map = new HashMap<>();
-		map.put("/employee-feed", new EmployeeWebSocketHandler());
+		map.put(
+				"/feeds",
+				new ReactiveWebSocketHandler(objectMapper())
+		);
 		return map;
 	}
 

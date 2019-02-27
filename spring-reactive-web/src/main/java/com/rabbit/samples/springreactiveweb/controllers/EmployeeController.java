@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,8 +33,10 @@ public class EmployeeController {
 
 	EmployeeRepository employeeRepository;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 	private Flux<Employee> getAll() {
+
+		log.info("get all employees");
 
 		return getEmployeeRepository().findAll();
 	}
@@ -41,11 +44,15 @@ public class EmployeeController {
 	@GetMapping("/{id}")
 	private Mono<Employee> getById(@PathVariable final String id) {
 
+		log.info("get employee by id {}", id);
+
 		return getEmployeeRepository().findById(id);
 	}
 
 	@PutMapping
 	private Mono<Employee> update(@RequestBody final Employee employee) {
+
+		log.info("update employee {}", employee);
 
 		return getEmployeeRepository().update(employee);
 	}

@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
@@ -13,11 +14,12 @@ import lombok.experimental.FieldDefaults;
  * matteo@solidarchitectures.com
  * 19 Feb 2019
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 public class Employee {
 
 	String id;

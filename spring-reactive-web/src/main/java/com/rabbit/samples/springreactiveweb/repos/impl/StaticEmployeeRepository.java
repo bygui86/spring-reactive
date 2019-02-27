@@ -29,7 +29,8 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 
 	public Mono<Employee> findById(final String id) {
 
-		return Mono.just(employeeData.get(id));
+		final Employee employee = employeeData.get(id);
+		return employee != null ? Mono.just(employee) : Mono.empty();
 	}
 
 	public Mono<Employee> update(final Employee employee) {
@@ -38,9 +39,10 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 
 		if(existingEmployee != null) {
 			existingEmployee.setName(employee.getName());
+			return Mono.just(existingEmployee);
 		}
 
-		return Mono.just(existingEmployee);
+		return Mono.empty();
 	}
 
 	static {

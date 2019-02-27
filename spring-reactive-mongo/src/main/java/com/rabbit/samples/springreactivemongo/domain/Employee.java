@@ -15,11 +15,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * matteo@solidarchitectures.com
  * 19 Feb 2019
  */
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Document("employees")
 public class Employee {
 

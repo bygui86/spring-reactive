@@ -18,6 +18,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
  * 19 Feb 2019
  */
 @EnableWebFluxSecurity
+// PLEASE NOTE: @Configuration already included in @EnableWebFluxSecurity
 public class WebFluxSecurityConfig {
 
 	@Bean
@@ -46,14 +47,12 @@ public class WebFluxSecurityConfig {
 
 				.authorizeExchange()
 
-				.pathMatchers(HttpMethod.POST, "/employees").hasRole("ADMIN")
 				.pathMatchers(HttpMethod.PUT, "/employees").hasRole("ADMIN")
 				.pathMatchers("/**").permitAll()
 
-				.and()
-				.httpBasic()
-				.and()
-				.build()
+				.and().httpBasic()
+
+				.and().build()
 		;
 	}
 }
