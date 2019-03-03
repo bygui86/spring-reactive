@@ -33,14 +33,6 @@ public class EmployeeController {
 
 	EmployeeRepository employeeRepository;
 
-	@GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-	private Flux<Employee> getAll() {
-
-		log.info("get all employees");
-
-		return getEmployeeRepository().findAll();
-	}
-
 	@GetMapping("/{id}")
 	private Mono<Employee> getById(@PathVariable final String id) {
 
@@ -49,7 +41,16 @@ public class EmployeeController {
 		return getEmployeeRepository().findById(id);
 	}
 
-	@PutMapping
+	// @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	private Flux<Employee> getAll() {
+
+		log.info("get all employees");
+
+		return getEmployeeRepository().findAll();
+	}
+
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	private Mono<Employee> update(@RequestBody final Employee employee) {
 
 		log.info("update employee {}", employee);

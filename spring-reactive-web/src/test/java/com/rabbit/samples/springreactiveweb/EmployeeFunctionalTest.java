@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 
 /**
@@ -68,5 +69,25 @@ public class EmployeeFunctionalTest {
 				.expectBody(Employee.class)
 				.isEqualTo(employee);
 	}
+
+	// @Test
+	// public void test_update() {
+	//
+	// 	// given
+	// 	Employee employee = new Employee("1", "Employee 1 Updated");
+	//
+	// 	webTestClient
+	// 			// when
+	// 			.put()
+	// 			.uri("/employees")
+	// 			.body(Mono.just(employee), Employee.class)
+	// 			.exchange()
+	//
+	// 			//then
+	// 			.expectStatus()
+	// 			.isOk()
+	// 			.expectBody(Employee.class)
+	// 			.isEqualTo(employee);
+	// }
 
 }

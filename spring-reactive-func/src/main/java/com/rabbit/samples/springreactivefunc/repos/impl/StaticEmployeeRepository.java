@@ -2,6 +2,7 @@ package com.rabbit.samples.springreactivefunc.repos.impl;
 
 import com.rabbit.samples.springreactivefunc.domain.Employee;
 import com.rabbit.samples.springreactivefunc.repos.EmployeeRepository;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,6 +15,7 @@ import java.util.Map;
  * matteo@solidarchitectures.com
  * 19 Feb 2019
  */
+@Slf4j
 public class StaticEmployeeRepository implements EmployeeRepository {
 
 	static Map<String, Employee> employeeData;
@@ -22,16 +24,22 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 
 	public Flux<Employee> findAll() {
 
+		log.debug("find all");
+
 		return Flux.fromIterable(employeeData.values());
 	}
 
 	public Mono<Employee> findById(final String id) {
+
+		log.debug("find by id {}", id);
 
 		final Employee employee = employeeData.get(id);
 		return employee != null ? Mono.just(employee) : Mono.empty();
 	}
 
 	public Mono<Employee> update(final Employee employee) {
+
+		log.debug("update {}", employee);
 
 		Employee existingEmployee = employeeData.get(employee.getId());
 
