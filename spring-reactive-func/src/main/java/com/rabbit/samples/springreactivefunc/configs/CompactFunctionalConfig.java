@@ -2,6 +2,9 @@ package com.rabbit.samples.springreactivefunc.configs;
 
 import com.rabbit.samples.springreactivefunc.domain.Employee;
 import com.rabbit.samples.springreactivefunc.domain.Event;
+import com.rabbit.samples.springreactivefunc.filters.EmployeeFilterHandler;
+import com.rabbit.samples.springreactivefunc.filters.EventFilterHandler;
+import com.rabbit.samples.springreactivefunc.filters.GenericFilterHandler;
 import com.rabbit.samples.springreactivefunc.repos.EmployeeRepository;
 import com.rabbit.samples.springreactivefunc.repos.EventRepository;
 import com.rabbit.samples.springreactivefunc.repos.impl.StaticEmployeeRepository;
@@ -15,7 +18,6 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.web.reactive.function.BodyExtractors.toMono;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
@@ -41,6 +43,24 @@ public class CompactFunctionalConfig {
 	EventRepository eventRepository() {
 
 		return new StaticEventRepository();
+	}
+
+	@Bean
+	GenericFilterHandler genericFilterHandler() {
+
+		return new GenericFilterHandler();
+	}
+
+	@Bean
+	EmployeeFilterHandler employeeFilterHandler() {
+
+		return new EmployeeFilterHandler();
+	}
+
+	@Bean
+	EventFilterHandler eventFilterHandler() {
+
+		return new EventFilterHandler();
 	}
 
 	@Bean
@@ -73,7 +93,6 @@ public class CompactFunctionalConfig {
 														)
 														.PUT(
 																"",
-																accept(APPLICATION_JSON),
 																serverRequest ->
 																		ok()
 																				.contentType(APPLICATION_JSON)
@@ -81,6 +100,7 @@ public class CompactFunctionalConfig {
 														)
 								)
 								.build()
+								.filter(employeeFilterHandler()::requestLogging)
 				)
 
 				// EVENTS
@@ -94,7 +114,9 @@ public class CompactFunctionalConfig {
 														.GET(
 																"/{id}",
 																serverRequest ->
-																		ok().body(eventRepository().findById(Long.valueOf(serverRequest.pathVariable("id"))), Event.class)
+																		ok()
+																				.contentType(APPLICATION_JSON)
+																				.body(eventRepository().findById(Long.valueOf(serverRequest.pathVariable("id"))), Event.class)
 														)
 														.GET(
 																"",
@@ -105,8 +127,11 @@ public class CompactFunctionalConfig {
 																				.body(eventRepository().findAll(), Event.class)
 														)
 								).build()
+								.filter(eventFilterHandler()::requestLogging)
 				)
+				.filter(genericFilterHandler()::performanceLogging)
 				.build();
 	}
+
 
 }

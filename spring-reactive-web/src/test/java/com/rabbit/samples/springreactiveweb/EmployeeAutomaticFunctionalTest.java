@@ -1,11 +1,17 @@
 package com.rabbit.samples.springreactiveweb;
 
 import com.rabbit.samples.springreactiveweb.domain.Employee;
+import com.rabbit.samples.springreactiveweb.repos.impl.StaticEmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
@@ -22,10 +28,22 @@ import reactor.core.publisher.Mono;
 		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		classes = SpringReactiveWebApplication.class
 )
-public class EmployeeFunctionalTest {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class EmployeeAutomaticFunctionalTest {
+
+	@Autowired
+	ApplicationContext applicationContext;
 
 	@Autowired
 	private WebTestClient webTestClient;
+
+	@Before
+	public void setup() {
+
+		// reset in-memory employees map
+		final StaticEmployeeRepository staticEmployeeRepository = applicationContext.getBean(StaticEmployeeRepository.class);
+		staticEmployeeRepository.initData();
+	}
 
 	@Test
 	public void test_getAll() {
@@ -70,24 +88,25 @@ public class EmployeeFunctionalTest {
 				.isEqualTo(employee);
 	}
 
-	// @Test
-	// public void test_update() {
-	//
-	// 	// given
-	// 	Employee employee = new Employee("1", "Employee 1 Updated");
-	//
-	// 	webTestClient
-	// 			// when
-	// 			.put()
-	// 			.uri("/employees")
-	// 			.body(Mono.just(employee), Employee.class)
-	// 			.exchange()
-	//
-	// 			//then
-	// 			.expectStatus()
-	// 			.isOk()
-	// 			.expectBody(Employee.class)
-	// 			.isEqualTo(employee);
-	// }
+	@Test
+	@WithMockUser(roles = "ADMIN")
+	public void test_update() {
+
+		// given
+		Employee employee = new Employee("1", "Employee 1 Updated");
+
+		webTestClient
+				// when
+				.put()
+				.uri("/employees")
+				.body(Mono.just(employee), Employee.class)
+				.exchange()
+
+				//then
+				.expectStatus()
+				.isOk()
+				.expectBody(Employee.class)
+				.isEqualTo(employee);
+	}
 
 }

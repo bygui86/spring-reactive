@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,13 @@ import java.util.Map;
 @Slf4j
 public class StaticEmployeeRepository implements EmployeeRepository {
 
-	static Map<String, Employee> employeeData;
+	private static Map<String, Employee> employeeData;
 
-	static Map<String, String> employeeAccessData;
+	@PostConstruct
+	public void postConstruct() {
+
+		initData();
+	}
 
 	public Flux<Employee> findAll() {
 
@@ -41,23 +46,17 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 
 		log.debug("update {}", employee);
 
-		Employee existingEmployee = employeeData.get(employee.getId());
+		Employee currentEmployee = employeeData.get(employee.getId());
 
-		if(existingEmployee != null) {
-			existingEmployee.setName(employee.getName());
-			return Mono.just(existingEmployee);
+		if(currentEmployee != null) {
+			currentEmployee.setName(employee.getName());
+			return Mono.just(currentEmployee);
 		}
 
 		return Mono.empty();
 	}
 
-	static {
-
-		initData();
-		initAccessData();
-	}
-
-	private static void initData() {
+	public void initData() {
 
 		employeeData = new HashMap<>();
 		employeeData.put("1", new Employee("1","Employee 1"));
@@ -70,21 +69,6 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 		employeeData.put("8", new Employee("8","Employee 8"));
 		employeeData.put("9", new Employee("9","Employee 9"));
 		employeeData.put("10", new Employee("10","Employee 10"));
-	}
-
-	private static void initAccessData() {
-
-		employeeAccessData = new HashMap<>();
-		employeeAccessData.put("1", "Employee 1 Access Key");
-		employeeAccessData.put("2", "Employee 2 Access Key");
-		employeeAccessData.put("3", "Employee 3 Access Key");
-		employeeAccessData.put("4", "Employee 4 Access Key");
-		employeeAccessData.put("5", "Employee 5 Access Key");
-		employeeAccessData.put("6", "Employee 6 Access Key");
-		employeeAccessData.put("7", "Employee 7 Access Key");
-		employeeAccessData.put("8", "Employee 8 Access Key");
-		employeeAccessData.put("9", "Employee 9 Access Key");
-		employeeAccessData.put("10", "Employee 10 Access Key");
 	}
 
 }

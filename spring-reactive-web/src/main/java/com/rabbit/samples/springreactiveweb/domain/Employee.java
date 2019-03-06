@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 
 
@@ -20,22 +21,11 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @EqualsAndHashCode
+@ToString
 public class Employee {
 
 	String id;
 
 	String name;
-
-	@Override
-	public String toString() {
-
-		return new StringBuilder()
-				.append("{\"id\":")
-				.append(getId())
-				.append(",\"name\":")
-				.append(getName())
-				.append("}")
-				.toString();
-	}
 
 }

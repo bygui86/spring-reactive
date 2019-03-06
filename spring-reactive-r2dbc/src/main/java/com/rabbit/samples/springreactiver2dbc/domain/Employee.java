@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.annotation.Id;
 
@@ -19,24 +21,13 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @Data
 @Builder
+@EqualsAndHashCode
+@ToString
 public class Employee {
 
 	@Id
-	// String id;
-	Long id;
+	Integer id;
 
 	String name;
-
-	@Override
-	public String toString() {
-
-		return new StringBuilder()
-				.append("{\"id\":")
-				.append(getId())
-				.append(",\"name\":")
-				.append(getName())
-				.append("}")
-				.toString();
-	}
 
 }

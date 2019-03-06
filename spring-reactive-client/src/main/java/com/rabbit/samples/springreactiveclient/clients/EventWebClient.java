@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import java.util.Random;
 @AllArgsConstructor
 @Getter(AccessLevel.PROTECTED)
 @Component
+@Profile("web-func")
 public class EventWebClient {
 
 	final String URI_ROOT = "/events";
@@ -59,7 +61,9 @@ public class EventWebClient {
 		getWebClient()
 				.get()
 				.uri(URI_ROOT)
-				.accept(MediaType.TEXT_EVENT_STREAM)
+				// WARNING: adding "accept" header is not working, investigate better about the reason!
+				// .accept(MediaType.TEXT_EVENT_STREAM)
+				// .accept(MediaType.APPLICATION_STREAM_JSON)
 				.retrieve()
 				.bodyToFlux(Event.class)
 				.subscribe(this::logInfoEvent)

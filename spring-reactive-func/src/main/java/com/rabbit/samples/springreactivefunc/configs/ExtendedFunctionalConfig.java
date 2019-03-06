@@ -60,7 +60,9 @@ public class ExtendedFunctionalConfig {
 				.GET(
 						"/employees/{id}",
 						serverRequest ->
-								ok().body(employeeRepository().findById(serverRequest.pathVariable("id")), Employee.class)
+								ok()
+										.contentType(APPLICATION_JSON)
+										.body(employeeRepository().findById(serverRequest.pathVariable("id")), Employee.class)
 				)
 				.build();
 	}
@@ -88,10 +90,9 @@ public class ExtendedFunctionalConfig {
 						"/employees",
 						accept(APPLICATION_JSON),
 						serverRequest ->
-								serverRequest
-										.body(toMono(Employee.class))
-										.doOnNext(employeeRepository()::update)
-										.then(ok().build())
+								ok()
+										.contentType(APPLICATION_JSON)
+										.body(serverRequest.bodyToMono(Employee.class).doOnNext(employeeRepository()::update), Employee.class)
 				)
 				.build();
 	}
@@ -103,7 +104,9 @@ public class ExtendedFunctionalConfig {
 				.GET(
 						"/events/{id}",
 						serverRequest ->
-								ok().body(eventRepository().findById(Long.valueOf(serverRequest.pathVariable("id"))), Event.class)
+								ok()
+										.contentType(APPLICATION_JSON)
+										.body(eventRepository().findById(Long.valueOf(serverRequest.pathVariable("id"))), Event.class)
 				)
 				.build();
 	}
@@ -116,8 +119,8 @@ public class ExtendedFunctionalConfig {
 						"/events",
 						serverRequest ->
 								ok()
-										// .contentType(MediaType.TEXT_EVENT_STREAM)
-										.contentType(MediaType.APPLICATION_STREAM_JSON)
+										.contentType(MediaType.TEXT_EVENT_STREAM)
+										// .contentType(MediaType.APPLICATION_STREAM_JSON)
 										.body(eventRepository().findAll(), Event.class)
 				)
 				.build();

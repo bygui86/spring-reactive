@@ -1,8 +1,7 @@
 package com.rabbit.samples.springreactiver2dbc.configs;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.reactive.config.EnableWebFlux;
 
 
 /**
@@ -11,9 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * 19 Feb 2019
  */
 @Configuration
-@EnableScheduling
-@Profile("scheduling")
-public class SchedulingConfig {
+@EnableWebFlux
+public class WebFluxConfig {
 
 	// no-op
 }

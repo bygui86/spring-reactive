@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,16 +35,7 @@ public class EmployeeController {
 
 	EmployeeRepository employeeRepository;
 
-	@GetMapping
-	private Flux<Employee> getAll() {
-
-		log.info("get all employees");
-
-		return getEmployeeRepository().findAll();
-	}
-
 	@GetMapping("/{id}")
-	// private Mono<Employee> getById(@PathVariable final String id) {
 	private Mono<Employee> getById(@PathVariable final Long id) {
 
 		log.info("get employee by id {}", id);
@@ -51,8 +43,16 @@ public class EmployeeController {
 		return getEmployeeRepository().findById(id);
 	}
 
-	@PostMapping
-	// private Mono<String> insert(@RequestBody final Employee employee) {
+	// @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	@GetMapping(produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+	private Flux<Employee> getAll() {
+
+		log.info("get all employees");
+
+		return getEmployeeRepository().findAll();
+	}
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	private Mono<Employee> insert(@RequestBody final Employee employee) {
 
 		log.info("insert employee {}", employee);
@@ -60,8 +60,7 @@ public class EmployeeController {
 		return save(employee);
 	}
 
-	@PutMapping
-	// private Mono<String> update(@RequestBody final Employee employee) {
+	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	private Mono<Employee> update(@RequestBody final Employee employee) {
 
 		log.info("update employee {}", employee);
@@ -78,7 +77,6 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/{id}")
-	// private Mono<Void> deleteById(@PathVariable final String id) {
 	private Mono<Void> deleteById(@PathVariable final Long id) {
 
 		log.info("delete employee by id {}", id);
@@ -86,7 +84,6 @@ public class EmployeeController {
 		return getEmployeeRepository().deleteById(id);
 	}
 
-	// private Mono<String> save(@RequestBody final Employee employee) {
 	private Mono<Employee> save(@RequestBody final Employee employee) {
 
 		return getEmployeeRepository().save(employee);

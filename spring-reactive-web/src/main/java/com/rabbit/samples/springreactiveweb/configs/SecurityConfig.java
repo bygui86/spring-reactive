@@ -2,6 +2,7 @@ package com.rabbit.samples.springreactiveweb.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+// import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
@@ -18,8 +19,9 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
  * 19 Feb 2019
  */
 @EnableWebFluxSecurity
-// PLEASE NOTE: @Configuration already included in @EnableWebFluxSecurity
-public class WebFluxSecurityConfig {
+// @EnableReactiveMethodSecurity
+// PLEASE NOTE: @Configuration already included in both @EnableWebFluxSecurity and @EnableReactiveMethodSecurity
+public class SecurityConfig {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -30,13 +32,13 @@ public class WebFluxSecurityConfig {
 	@Bean
 	public MapReactiveUserDetailsService mapReactiveUserDetailsService() {
 
-		UserDetails userDetails = User
+		UserDetails adminDetails = User
 				.withUsername("admin")
 				.password(passwordEncoder().encode("secret"))
 				.roles("ADMIN")
 				.build();
 
-		return new MapReactiveUserDetailsService(userDetails);
+		return new MapReactiveUserDetailsService(adminDetails);
 	}
 
 	@Bean

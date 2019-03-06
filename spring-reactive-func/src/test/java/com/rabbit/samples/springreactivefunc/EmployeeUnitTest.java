@@ -5,11 +5,14 @@ import com.rabbit.samples.springreactivefunc.repos.EmployeeRepository;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -34,6 +37,7 @@ import static org.mockito.Mockito.verify;
 		webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
 		classes = SpringReactiveFuncApplication.class
 )
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class EmployeeUnitTest {
 
 	@Autowired
@@ -100,6 +104,7 @@ public class EmployeeUnitTest {
 	}
 
 	@Test
+	@WithMockUser(roles = "ADMIN")
 	public void test_update() {
 
 		// given
@@ -123,6 +128,5 @@ public class EmployeeUnitTest {
 		// verify
 		verify(employeeRepository).update(employee);
 	}
-
 
 }

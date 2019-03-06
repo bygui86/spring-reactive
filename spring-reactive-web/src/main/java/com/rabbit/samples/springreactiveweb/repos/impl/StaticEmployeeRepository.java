@@ -2,10 +2,12 @@ package com.rabbit.samples.springreactiveweb.repos.impl;
 
 import com.rabbit.samples.springreactiveweb.domain.Employee;
 import com.rabbit.samples.springreactiveweb.repos.EmployeeRepository;
-import org.springframework.stereotype.Repository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,19 +17,28 @@ import java.util.Map;
  * matteo@solidarchitectures.com
  * 19 Feb 2019
  */
-@Repository
+@Slf4j
+@Component
 public class StaticEmployeeRepository implements EmployeeRepository {
 
-	static Map<String, Employee> employeeData;
+	private static Map<String, Employee> employeeData;
 
-	static Map<String, String> employeeAccessData;
+	@PostConstruct
+	public void postConstruct() {
+
+		initData();
+	}
 
 	public Flux<Employee> findAll() {
+
+		log.debug("find all");
 
 		return Flux.fromIterable(employeeData.values());
 	}
 
 	public Mono<Employee> findById(final String id) {
+
+		log.debug("find by id {}", id);
 
 		final Employee employee = employeeData.get(id);
 		return employee != null ? Mono.just(employee) : Mono.empty();
@@ -35,23 +46,19 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 
 	public Mono<Employee> update(final Employee employee) {
 
-		Employee existingEmployee = employeeData.get(employee.getId());
+		log.debug("update {}", employee);
 
-		if(existingEmployee != null) {
-			existingEmployee.setName(employee.getName());
-			return Mono.just(existingEmployee);
+		Employee currentEmployee = employeeData.get(employee.getId());
+
+		if(currentEmployee != null) {
+			currentEmployee.setName(employee.getName());
+			return Mono.just(currentEmployee);
 		}
 
 		return Mono.empty();
 	}
 
-	static {
-
-		initData();
-		initAccessData();
-	}
-
-	private static void initData() {
+	public void initData() {
 
 		employeeData = new HashMap<>();
 		employeeData.put("1", new Employee("1","Employee 1"));
@@ -64,21 +71,6 @@ public class StaticEmployeeRepository implements EmployeeRepository {
 		employeeData.put("8", new Employee("8","Employee 8"));
 		employeeData.put("9", new Employee("9","Employee 9"));
 		employeeData.put("10", new Employee("10","Employee 10"));
-	}
-
-	private static void initAccessData() {
-
-		employeeAccessData = new HashMap<>();
-		employeeAccessData.put("1", "Employee 1 Access Key");
-		employeeAccessData.put("2", "Employee 2 Access Key");
-		employeeAccessData.put("3", "Employee 3 Access Key");
-		employeeAccessData.put("4", "Employee 4 Access Key");
-		employeeAccessData.put("5", "Employee 5 Access Key");
-		employeeAccessData.put("6", "Employee 6 Access Key");
-		employeeAccessData.put("7", "Employee 7 Access Key");
-		employeeAccessData.put("8", "Employee 8 Access Key");
-		employeeAccessData.put("9", "Employee 9 Access Key");
-		employeeAccessData.put("10", "Employee 10 Access Key");
 	}
 
 }

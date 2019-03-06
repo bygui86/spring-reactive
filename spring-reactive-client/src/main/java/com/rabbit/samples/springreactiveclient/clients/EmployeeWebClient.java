@@ -5,12 +5,20 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import java.nio.charset.Charset;
 import java.util.Random;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 /**
@@ -22,25 +30,12 @@ import java.util.Random;
 @AllArgsConstructor
 @Getter(AccessLevel.PROTECTED)
 @Component
+@Profile("web-func")
 public class EmployeeWebClient {
 
 	final String URI_ROOT = "/employees";
 
 	WebClient webClient;
-
-	@Scheduled(initialDelay = 5000, fixedRate = 1000)
-	public void update() {
-
-		String id = "1";
-
-		log.info("update employee id {}", id);
-
-		getWebClient()
-				.put()
-				.uri(URI_ROOT)
-				.body(BodyInserters.fromObject(Employee.builder().id(id).name("Matteo Baiguini").build()))
-		;
-	}
 
 	@Scheduled(initialDelay = 1000, fixedRate = 3000)
 	public void getById() {
@@ -66,6 +61,25 @@ public class EmployeeWebClient {
 				.uri(URI_ROOT)
 				.retrieve()
 				.bodyToFlux(Employee.class)
+				.subscribe(this::logInfoEmployee)
+		;
+	}
+
+	@Scheduled(initialDelay = 5000, fixedRate = 10000)
+	public void update() {
+
+		final Employee employee = Employee.builder().id("1").name("Matteo Baiguini").build();
+		log.info("scheduled update employee {}...", employee);
+
+		getWebClient()
+				.put()
+				.uri(URI_ROOT)
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+				.header("Authorization", "Basic " + Base64Utils
+						.encodeToString(("admin:secret").getBytes(UTF_8)))
+				.body(Mono.just(employee), Employee.class)
+				.retrieve()
+				.bodyToMono(Employee.class)
 				.subscribe(this::logInfoEmployee)
 		;
 	}
