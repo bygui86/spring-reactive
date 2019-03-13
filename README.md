@@ -9,7 +9,7 @@
 * Reactive web socket - `[STAND BY]`
 * Reactive web socket client
 * Reactive MongoDB
-* Reactive R2DBC - `[NOT WORKING]`
+* Reactive R2DBC - `[NOT WORKING - ANALYSING]`
 * Reactive functional
 
 ---
@@ -20,19 +20,28 @@
 
 ---
 
-## Run sample
+## Run all samples but Reactive R2DBC
 
 Start application
 ```
 cd <PROJECT_ROOT_FOLDER>/<SUB_PROJECT_FOLDER>
-mvnw clean package spring-boot:run
+mvnw clean spring-boot:run
+```
+
+## Run Reactive R2DBC
+
+Start application
+```
+cd <PROJECT_ROOT_FOLDER>/<SUB_PROJECT_FOLDER>
+docker run -d --name postgres -e POSTGRES_DB=reactive -e POSTGRES_USER=user -e POSTGRES_PASSWORD=secret -p 5432:5432 postgres:alpine
+mvnw clean spring-boot:run
 ```
 
 ---
 
 ## TODOs
 
-* Let R2DBC work - `[IN PROGRESS]`
+* R2DBC sample not working - `[CHECK A FUTURE MORE STABLE RELEASE OF LIBRARIES]`
 * Add validation
 * Add error handling
 * Add OAuth2 security
@@ -46,7 +55,7 @@ mvnw clean package spring-boot:run
 ### General
 
 * https://spring.io/blog/2017/03/15/spring-tips-the-spring-web-flux-reactive-client
-* https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html `[IN PROGRESS]`
+* https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html
 * https://medium.com/@cheron.antoine/tuto-building-a-reactive-restful-api-with-spring-webflux-java-258fd4dbae41 `[TODO]`
 
 ### Reactive Web
@@ -75,6 +84,8 @@ mvnw clean package spring-boot:run
 
 ### Reactive R2DBC
 
+* https://r2dbc.io/clients/ - `[TODO]`
+* https://github.com/r2dbc/r2dbc-client - `[TODO]`
 * https://spring.io/projects/spring-data-r2dbc
 * https://github.com/spring-projects/spring-data-r2dbc
 * https://github.com/r2dbc/r2dbc-h2
@@ -83,7 +94,10 @@ mvnw clean package spring-boot:run
 * https://github.com/r2dbc/r2dbc-client - `[TODO]`
 * https://github.com/spring-projects/spring-data-examples/tree/master/r2dbc/example
 * https://docs.spring.io/spring-data/r2dbc/docs/1.0.0.M1/reference/html/
-* https://spring.io/blog/2018/12/12/spring-data-r2dbc-1-0-m1-released - `[IN PROGRESS]`
+* https://spring.io/blog/2018/12/12/spring-data-r2dbc-1-0-m1-released
+* https://github.com/spring-projects-experimental/spring-boot-r2dbc
+* https://dzone.com/articles/introduction-to-reactive-apis-with-postgres-r2dbc
+* https://github.com/mirromutth/r2dbc-mysql - `NOT OFFICIAL` - `[TODO]`
 
 ### Reactive Functional
 

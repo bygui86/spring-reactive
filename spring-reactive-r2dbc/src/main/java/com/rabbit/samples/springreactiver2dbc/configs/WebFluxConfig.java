@@ -8,8 +8,7 @@ import org.springframework.data.r2dbc.function.DatabaseClient;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 import javax.annotation.PostConstruct;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Configuration
 @EnableWebFlux
-@Order(100)
+@Order(101)
 public class WebFluxConfig {
 
 	DatabaseClient databaseClient;
@@ -29,21 +28,34 @@ public class WebFluxConfig {
 	@PostConstruct
 	void postConstruct() {
 
-		log.info("create postgres table");
+		log.info("drop employee table");
 
-		List<String> statements =
-				Arrays.asList(
-						"DROP TABLE IF EXISTS employee;",
-						"CREATE TABLE employee ( id SERIAL PRIMARY KEY, name VARCHAR(250) );"
-				);
+		databaseClient
+				.execute()
+				.sql("DROP TABLE IF EXISTS employee;")
+				.fetch()
+				// .rowsUpdated()
+				.all()
+				.subscribe(this::logResults);
 
-		statements.forEach(
-				state -> databaseClient
-						.execute()
-						.sql(state)
-						.fetch()
-						// .rowsUpdated()
-						.all()
+		log.info("create employee table");
+
+		databaseClient
+				.execute()
+				.sql("CREATE TABLE employee ( id serial PRIMARY KEY, name character varying NOT NULL );")
+				.fetch()
+				// .rowsUpdated()
+				.all()
+				.subscribe(this::logResults);
+	}
+
+	public void logResults(final Map<String ,Object> results) {
+
+		log.info("create postgres table - results");
+		results.forEach(
+				(k, v) -> {
+					log.info("key {} value {} valueType {}", k, v.toString(), v.getClass());
+				}
 		);
 	}
 
