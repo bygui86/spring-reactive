@@ -51,6 +51,7 @@ RemoteSystemsTempFiles/
 .settings/
 
 ########### Visual Studio Code
+.vscode
 *.code-workspace
 
 
@@ -68,9 +69,3 @@ bin/
 build/
 target/
 *.class
-
-
-
-###################### Proejct-Specific #########
-
-testing/xml/*.xml
