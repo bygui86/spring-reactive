@@ -6,10 +6,10 @@
 * Reactive web
 * Reactive security
 * Reactive web client
-* Reactive web socket - `[STAND BY]`
+* Reactive web socket - `STAND BY`
 * Reactive web socket client
 * Reactive MongoDB
-* Reactive R2DBC - `[NOT WORKING - ANALYSING]`
+* Reactive R2DBC - `NOT WORKING - WAITING FOR NEXT RELEASE`
 * Reactive functional
 
 ---
@@ -41,12 +41,13 @@ mvnw clean spring-boot:run
 
 ## TODOs
 
-* R2DBC sample not working - `[CHECK A FUTURE MORE STABLE RELEASE OF LIBRARIES]`
 * Add validation
 * Add error handling
+* Add spring boot admin
 * Add OAuth2 security
 * Test Debug
 * Test Fongo
+* R2DBC sample not working - `[CHECK A FUTURE MORE STABLE RELEASE OF LIBRARIES]`
 
 ---
 
