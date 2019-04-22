@@ -26,7 +26,7 @@ import org.springframework.data.annotation.Id;
 public class Employee {
 
 	@Id
-	Integer id;
+	String id;
 
 	String name;
 

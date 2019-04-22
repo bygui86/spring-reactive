@@ -36,7 +36,7 @@ public class EmployeeController {
 	EmployeeRepository employeeRepository;
 
 	@GetMapping("/{id}")
-	private Mono<Employee> getById(@PathVariable final Long id) {
+	private Mono<Employee> getById(@PathVariable final String id) {
 
 		log.info("get employee by id {}", id);
 
@@ -77,7 +77,7 @@ public class EmployeeController {
 	}
 
 	@DeleteMapping("/{id}")
-	private Mono<Void> deleteById(@PathVariable final Long id) {
+	private Mono<Void> deleteById(@PathVariable final String id) {
 
 		log.info("delete employee by id {}", id);
 

@@ -26,7 +26,7 @@ public class R2dbcPostgresConfig extends AbstractR2dbcConfiguration {
 
 		log.info("create r2dbc POSTGRES connection factory");
 
-		final String msg = "Postgres DOCKER container started: IP '{}', port '{}', dbName '{}', user '{}', pw '{}'";
+		final String msg = "Connecting to PostgreSQL: IP '{}', port '{}', dbName '{}', user '{}', pw '{}'";
 		final String containerIpAddress = "localhost";
 		final int firstMappedPort = 5432;
 		final String databaseName = "reactive";
